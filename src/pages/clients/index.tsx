@@ -1,12 +1,13 @@
 import React from 'react'
 
 import Head from 'next/head'
-import { Sidebar } from '../components/sidebar/Sidebar'
+import { Sidebar } from '../../components/sidebar/Sidebar'
 
 import { Box, CssBaseline, AppBar, Toolbar } from '@mui/material'
-import { TypographyComponent } from '../components/TypographyComponent'
+import Clients from '../../components/clients/Clients'
+import { TypographyComponent } from '../../components/TypographyComponent'
 
-const Home: React.FC = () => {
+const Client: React.FC = () => {
   return (
     <div>
       <Head>
@@ -22,12 +23,10 @@ const Home: React.FC = () => {
           </Toolbar>
         </AppBar>
         <Sidebar />
-        <main>
-          <h1>Carlos</h1>
-        </main>
+        <Clients />
       </Box>
     </div>
   )
 }
 
-export default Home
+export default Client

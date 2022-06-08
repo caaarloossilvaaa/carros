@@ -11,10 +11,10 @@ export default createGlobalStyle`
     background-color: ${props => theme.colors.background};
     color: ${props => theme.colors.text};
     font: 400 16px Roboto, sans-serif;
-    margin-top: 70px;
+    margin-top: 80px;
     margin-left: 10px;
   }
-  .myToolbar {
+  .toolbar {
     justify-content: space-between;
   }
 `

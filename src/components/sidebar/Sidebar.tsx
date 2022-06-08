@@ -37,6 +37,7 @@ import SignalCellularAltIcon from '@mui/icons-material/SignalCellularAlt'
 import BarChartIcon from '@mui/icons-material/BarChart'
 import SsidChartIcon from '@mui/icons-material/SsidChart'
 import GraphicEqIcon from '@mui/icons-material/GraphicEq'
+import HomeIcon from '@mui/icons-material/Home'
 
 const drawerWidth = 300
 const itemsMenu = [
@@ -49,7 +50,8 @@ const itemsMenu = [
   'Configurações',
   'Logout',
   'Despesas',
-  'Garantia'
+  'Garantia',
+  'Inicio'
 ]
 
 export const Sidebar: React.FC = () => {
@@ -98,6 +100,20 @@ export const Sidebar: React.FC = () => {
         <Toolbar />
         <Box sx={{ overflow: 'none' }}>
           <List
+              sx={{ width: '100%', maxWidth: 360 }}
+              component="nav"
+              aria-labelledby="nested-list-subheader"
+            >
+              <Link href='/' style={{ textDecoration: 'none', color: '#313638' }} >
+                <ListItemButton>
+                    <ListItemIcon>
+                      <HomeIcon />
+                    </ListItemIcon>
+                    <ListItemText primary={itemsMenu[10]} />
+                </ListItemButton>
+              </Link>
+          </List>
+          <List
             sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}
             component="nav"
             aria-labelledby="nested-list-subheader"
@@ -111,7 +127,7 @@ export const Sidebar: React.FC = () => {
             </ListItemButton>
             <Collapse in={collapse1} timeout="auto" unmountOnExit>
               <List component="div" disablePadding>
-                <Link href='#' style={{ textDecoration: 'none', color: '#313638' }} >
+                <Link href='/clients/new' style={{ textDecoration: 'none', color: '#313638' }} >
                   <ListItemButton sx={{ pl: 4 }}>
                     <ListItemIcon>
                       <AddIcon />
@@ -119,7 +135,7 @@ export const Sidebar: React.FC = () => {
                     <ListItemText primary="Novo Cliente" />
                   </ListItemButton>
                 </Link>
-                <Link href='#' style={{ textDecoration: 'none', color: '#313638' }} >
+                <Link href='/clients' style={{ textDecoration: 'none', color: '#313638' }} >
                   <ListItemButton sx={{ pl: 4 }}>
                     <ListItemIcon>
                       <FormatListBulletedIcon />
