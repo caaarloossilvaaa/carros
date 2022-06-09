@@ -1,4 +1,4 @@
-import React, { ChangeEvent, FormEvent, useEffect, useState } from 'react'
+import React, { ChangeEvent, FormEvent, useState } from 'react'
 import { useRouter } from 'next/router'
 import { Client } from '../../interfaces/Clients'
 import { Box, Button, FormControl, FormGroup, FormLabel, Input, InputLabel, MenuItem, Select } from '@mui/material'
@@ -24,7 +24,7 @@ const initialState = {
 const New = (): JSX.Element => {
   const [client, setClient] = useState<Client>(initialState)
   const [loading, setLoading] = useState(false)
-  const [openConfirm, setOpenConfirm] = useState(false)
+  // const [openConfirm, setOpenConfirm] = useState(false)
   const router = useRouter()
 
   const createClient = async (client: Client) =>
@@ -56,7 +56,7 @@ const New = (): JSX.Element => {
         createClient(client)
       }
       setClient(initialState)
-      // router.push('/')
+      router.push('/clients')
     } catch (error) {
       console.log(error)
     }
@@ -65,27 +65,6 @@ const New = (): JSX.Element => {
 
   const handleChange = ({ target: { name, value } }: ChangeInputHandler) =>
     setClient({ ...client, [name]: value })
-
-  // const loadClient = async (id: string) => {
-  //   const res = await fetch(baseUrl + '/clients/' + id)
-  //   const client = await res.json()
-  //   setClient({  })
-  // }
-
-  const handleDelete = async (id: string) => {
-    try {
-      const res = await fetch(baseUrl + '/clients/' + id, {
-        method: 'DELETE'
-      })
-      router.push('/')
-    } catch (error) {
-      console.log(error)
-    }
-  }
-
-  // useEffect(() => {
-  //   if (typeof router.query.id === 'string') load
-  // })
 
   return (
     <Box
