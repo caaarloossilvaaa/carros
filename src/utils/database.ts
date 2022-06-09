@@ -10,6 +10,7 @@ if (!conn) {
     port: parseInt(process.env.POSTGRES_PORT),
     database: process.env.POSTGRES_DATABASE
   })
+  console.log('Database connected!')
 }
 
 export { conn }
