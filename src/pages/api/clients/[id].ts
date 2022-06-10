@@ -21,7 +21,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       try {
         const { name, cpf, cnpj, adress, number, complement, district, city, state, phone, cell } = body
         const query = 'UPDATE clients SET name = $1, cpf = $2, cnpj = $3, adress = $4, number = $5, complement = $6, district = $7, city = $8, state = $9, phone = $10, cell = $11 WHERE id = $12 RETURNING *'
-        const values = [name, cpf, cnpj, adress, number, complement, district, city, state, phone, cell]
+        const values = [name, cpf, cnpj, adress, number, complement, district, city, state, phone, cell, id]
         const result = await conn.query(query, values)
         return res.json(result.rows[0])
       } catch (error: any) {
@@ -29,7 +29,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       }
     case 'DELETE':
       try {
-        const query = ''
+        const query = 'DELETE FROM clients WHERE id = $1 RETURNING *'
         const values = [id]
         const result = await conn.query(query, values)
 

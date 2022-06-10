@@ -1,9 +1,9 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { useRouter } from 'next/router'
 
 import { Client } from '../../interfaces/Clients'
 
-import { Paper, Box, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Button } from '@mui/material'
+import { Paper, Box, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Button, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions } from '@mui/material'
 
 import RemoveCircleIcon from '@mui/icons-material/RemoveCircle'
 import ModeEditIcon from '@mui/icons-material/ModeEdit'
@@ -14,6 +14,21 @@ interface Props {
 
 const ClientList = ({ clients = [] }: Props) => {
   const router = useRouter()
+  const [openConfirm, setOpenConfirm] = useState(false)
+
+  const handleDelete = async (id: string) => {
+    try {
+      // eslint-disable-next-line no-unused-vars
+      const res = await fetch('http://localhost:3000/api/clients/' + id, {
+        method: 'DELETE'
+      })
+
+      router.push('/clients')
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
   return (
     <Box
       width='80vw'
@@ -51,7 +66,7 @@ const ClientList = ({ clients = [] }: Props) => {
                   <Button onClick={() => router.push(`/clients/edit/${client.id}`)} key={client.id} >
                     <ModeEditIcon color='warning' />
                   </Button>
-                  <Button>
+                  <Button onClick={() => setOpenConfirm(true)} >
                     <RemoveCircleIcon color='error' />
                   </Button>
                 </TableCell>
@@ -60,6 +75,26 @@ const ClientList = ({ clients = [] }: Props) => {
           </TableBody>
         </Table>
       </TableContainer>
+      {clients.map((client) => (
+        <Dialog
+          open={openConfirm}
+          onClose={() => setOpenConfirm(false)}
+          key={client.id}
+        >
+          <DialogTitle>
+            {`Deletar o cliente ${client.name}?`}
+          </DialogTitle>
+          <DialogContent>
+            <DialogContentText>
+              Deseja deletar o cliente ${client.name} ?
+            </DialogContentText>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={() => handleDelete(client.id)}>Deletar</Button>
+            <Button onClick={() => setOpenConfirm(false)}>Cancelar</Button>
+          </DialogActions>
+        </Dialog>
+      ))}
     </Box>
   )
 }

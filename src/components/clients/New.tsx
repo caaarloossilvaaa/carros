@@ -1,11 +1,9 @@
-import React, { ChangeEvent, FormEvent, useState } from 'react'
+import React, { ChangeEvent, FormEvent, useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
 import { Client } from '../../interfaces/Clients'
 import { Box, Button, FormControl, FormGroup, FormLabel, Input, InputLabel, MenuItem, Select } from '@mui/material'
 
 type ChangeInputHandler = ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-
-const baseUrl = process.env.API_URL
 
 const initialState = {
   name: '',
@@ -21,11 +19,17 @@ const initialState = {
   cell: ''
 }
 
+// eslint-disable-next-line no-undef
 const New = (): JSX.Element => {
   const [client, setClient] = useState<Client>(initialState)
+  // eslint-disable-next-line no-unused-vars
   const [loading, setLoading] = useState(false)
-  // const [openConfirm, setOpenConfirm] = useState(false)
   const router = useRouter()
+
+  const handleCancel = () => {
+    setClient(initialState)
+    router.push('/clients')
+  }
 
   const createClient = async (client: Client) =>
     await fetch('http://localhost:3000/api/clients', {
@@ -37,7 +41,7 @@ const New = (): JSX.Element => {
     })
 
   const updateClient = async (id:string, client: Client) =>
-    await fetch(baseUrl + '/clients/' + id, {
+    await fetch('http://localhost:3000/api/clients/' + id, {
       method: 'PUT',
       body: JSON.stringify(client),
       headers: {
@@ -65,6 +69,28 @@ const New = (): JSX.Element => {
 
   const handleChange = ({ target: { name, value } }: ChangeInputHandler) =>
     setClient({ ...client, [name]: value })
+
+  const loadClient = async (id: string) => {
+    const res = await fetch('http://localhost:3000/api/clients/' + id)
+    const client = await res.json()
+    setClient({
+      name: client.name,
+      cpf: client.cpf,
+      cnpj: client.cnpj,
+      adress: client.adress,
+      number: client.number,
+      complement: client.complement,
+      district: client.district,
+      city: client.city,
+      state: client.state,
+      phone: client.phone,
+      cell: client.cell
+    })
+  }
+
+  useEffect(() => {
+    if (typeof router.query.id === 'string') loadClient(router.query.id)
+  }, [router.query])
 
   return (
     <Box
@@ -168,8 +194,15 @@ const New = (): JSX.Element => {
           </FormControl>
         </FormGroup>
         <FormGroup row sx={{ display: 'flex', justifyContent: 'flex-end' }} >
-          <Button type='submit' sx={{ marginTop: '20px' }} variant='contained' color='success'>Salvar</Button>
-          <Button sx={{ marginTop: '20px', marginLeft: '10px' }} variant='contained' color='error'>Cancelar</Button>
+          {router.query.id
+            ? (
+            <Button type='submit' sx={{ marginTop: '20px' }} variant='contained' color='success'>Atualizar</Button>
+              )
+            : (
+            <Button type='submit' sx={{ marginTop: '20px' }} variant='contained' color='success'>Salvar</Button>
+              )
+          }
+          <Button onClick={handleCancel} sx={{ marginTop: '20px', marginLeft: '10px' }} variant='contained' color='error'>Cancelar</Button>
         </FormGroup>
       </form>
     </Box>
